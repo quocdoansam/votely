@@ -1,7 +1,6 @@
 "use client";
-
 import * as React from "react";
-import { BookOpen, Bot, Cat, Settings2, SquareTerminal } from "lucide-react";
+import { Wallet, Boxes } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,34 +14,52 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
 import { NavMain } from "@/components/nav-main";
+import Logo from "../../public/logo.svg";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
-      title: "Playground",
+      title: "Elections",
       url: "#",
-      icon: SquareTerminal,
+      icon: Boxes,
       isActive: true,
+      items: [
+        {
+          title: "Create an election",
+          url: "/create-election",
+        },
+        {
+          title: "My election",
+          url: "#",
+        },
+        {
+          title: "Ongoing",
+          url: "#",
+        },
+        {
+          title: "Not started",
+          url: "#",
+        },
+        {
+          title: "Ended",
+          url: "#",
+        },
+      ],
     },
     {
-      title: "Models",
+      title: "Wallet",
       url: "#",
-      icon: Bot,
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
+      icon: Wallet,
+      items: [
+        {
+          title: "My wallet",
+          url: "/wallet",
+        },
+        {
+          title: "Why wallet?",
+          url: "/why-wallet",
+        },
+      ],
     },
   ],
 };
@@ -56,11 +73,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size='lg' asChild>
               <a href='/'>
                 <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-                  <Cat className='size-4' />
+                  <img src={Logo} alt='Logo' />
                 </div>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>Votely</span>
-                  <span className='truncate text-xs'>Application</span>
+                  <span className='truncate text-xs'>
+                    A voting blockchain integration
+                  </span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -71,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

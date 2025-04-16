@@ -2,18 +2,72 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github } from "lucide-react";
+import { Github, Loader2 } from "lucide-react";
 import Logo from "../../public/logo.svg";
+import { magic } from "@/lib/magic";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/auth-context";
+import { useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [email, setEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoggedIn, setUser } = useAuth();
+  const navigator = useNavigate();
+
+  const handleLogin = async () => {
+    if (!email) return;
+    try {
+      setIsLoading(true);
+      await magic.auth.loginWithMagicLink({ email });
+      const metadata = await magic.user.getInfo();
+      if (metadata.publicAddress) {
+        const user = {
+          name: metadata.email?.split("@")[0] ?? "",
+          email: metadata.email ?? "",
+          avatarUrl: "",
+          publicAddress: metadata.publicAddress,
+        };
+
+        localStorage.setItem("user-info", JSON.stringify(user));
+        setUser(user);
+        setIsLoggedIn(true);
+        navigator("/");
+      } else {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("Login with email failed: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      await magic.oauth2.loginWithRedirect({
+        provider: "google",
+        redirectURI: `${window.location.origin}/callback`,
+        scope: ["profile", "email"],
+      });
+    } catch (error) {
+      console.error("Google login failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
+          await handleLogin();
         }}
       >
         <div className='flex flex-col gap-6'>
@@ -36,10 +90,12 @@ export function LoginForm({
                 id='email'
                 type='email'
                 placeholder='johndoe@example.com'
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <Button type='submit' className='w-full'>
+              {isLoading && <Loader2 className='animate-spin' />}
               Login
             </Button>
           </div>
@@ -53,13 +109,22 @@ export function LoginForm({
               <Github />
               Continue with Github
             </Button>
-            <Button variant='outline' className='w-full' type='button'>
-              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
-                <path
-                  d='M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z'
-                  fill='currentColor'
-                />
-              </svg>
+            <Button
+              variant='outline'
+              className='w-full'
+              type='button'
+              onClick={loginWithGoogle}
+            >
+              {isLoading ? (
+                <Loader2 className='animate-spin' />
+              ) : (
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+                  <path
+                    d='M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z'
+                    fill='currentColor'
+                  />
+                </svg>
+              )}
               Continue with Google
             </Button>
           </div>
