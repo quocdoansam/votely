@@ -42,7 +42,7 @@ export function NavUser() {
         localStorage.removeItem("userInfo");
         setUser(null);
         setIsLoggedIn(false);
-        navigate("/login");
+        navigate("/");
       }
     } catch (err) {
       console.error("Logout failed:", err);

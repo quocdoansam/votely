@@ -29,7 +29,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/login' element={<LoginPage />} />
+      <Route path='/' element={<LoginPage />} />
       <Route path='/callback' element={<Callback />} />
     </Routes>
   );
