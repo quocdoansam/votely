@@ -31,15 +31,14 @@ import { magic } from "@/lib/magic";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { user } = useAuth();
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUser } = useAuth();
+  const { setIsLoggedIn, setUser, user } = useAuth();
 
   const handleLogout = async () => {
     try {
       const isLoggedOut = await magic.user.logout();
       if (isLoggedOut) {
-        localStorage.removeItem("userInfo");
+        localStorage.removeItem("user-info");
         setUser(null);
         setIsLoggedIn(false);
         navigate("/");
@@ -64,7 +63,7 @@ export function NavUser() {
                   alt={user?.email ?? undefined}
                 />
                 <AvatarFallback className='rounded-lg'>
-                  {user?.email.charAt(0).toUpperCase()}
+                  {user?.email ? user.email.charAt(0).toUpperCase() : "CN"}
                 </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
@@ -90,7 +89,7 @@ export function NavUser() {
                     alt={user?.name ?? user?.email?.split("@").join("")}
                   />
                   <AvatarFallback className='rounded-lg'>
-                    {user?.email.charAt(0).toUpperCase()}
+                    {user?.email ? user?.email.charAt(0).toUpperCase() : "CN"}
                   </AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>

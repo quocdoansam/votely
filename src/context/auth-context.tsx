@@ -8,10 +8,10 @@ import {
 import { magic } from "../lib/magic";
 
 interface UserInfo {
-  name: string;
-  email: string;
-  avatarUrl: string;
-  publicAddress: string;
+  name: string | null;
+  email: string | null;
+  avatarUrl: string | null;
+  publicAddress: string | null;
 }
 
 interface AuthContextType {
@@ -34,12 +34,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const init = async () => {
       try {
         const loggedIn = await magic.user.isLoggedIn();
-        setIsLoggedIn(loggedIn);
-
-        const savedUser = localStorage.getItem("user-info");
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
+        if (loggedIn) {
+          const stored = localStorage.getItem("user-info");
+          if (stored) {
+            setUser(JSON.parse(stored));
+          } else {
+          }
         }
+        setIsLoggedIn(loggedIn);
       } catch (err) {
         console.error("Error restoring session:", err);
       } finally {

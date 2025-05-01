@@ -22,19 +22,21 @@ export function LoginForm({
     if (!email) return;
     try {
       setIsLoading(true);
+
       await magic.auth.loginWithMagicLink({ email });
       const metadata = await magic.user.getInfo();
-      if (metadata.publicAddress) {
+      if (metadata) {
         const user = {
-          name: metadata.email?.split("@")[0] ?? "",
-          email: metadata.email ?? "",
-          avatarUrl: "",
+          name: metadata.email?.split("@")[0] ?? null,
+          email: metadata.email,
+          avatarUrl: metadata.email?.charAt(0) ?? null,
           publicAddress: metadata.publicAddress,
         };
 
         localStorage.setItem("user-info", JSON.stringify(user));
         setUser(user);
         setIsLoggedIn(true);
+
         navigator("/");
       } else {
         setUser(null);

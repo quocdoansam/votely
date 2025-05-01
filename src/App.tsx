@@ -1,13 +1,18 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./app/login/page";
 import Callback from "./components/callback";
-import { useAuth } from "./context/auth-context";
-import { Loader2 } from "lucide-react";
 import Page from "./app/dashboard/page";
 import CreateElection from "./components/election/create-election";
+import { useAuth } from "./context/auth-context";
+import { Loader2 } from "lucide-react";
+
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <>{children}</> : <Navigate to='/' replace />;
+}
 
 function App() {
-  const { isLoggedIn, isFetching } = useAuth();
+  const { isFetching } = useAuth();
 
   if (isFetching) {
     return (
@@ -17,20 +22,21 @@ function App() {
     );
   }
 
-  if (isLoggedIn) {
-    return (
-      <Routes>
-        <Route path='/' element={<Page />}>
-          <Route path='create-election' element={<CreateElection />} />
-        </Route>
-      </Routes>
-    );
-  }
-
   return (
     <Routes>
       <Route path='/' element={<LoginPage />} />
       <Route path='/callback' element={<Callback />} />
+
+      <Route
+        path='/'
+        element={
+          <RequireAuth>
+            <Page />
+          </RequireAuth>
+        }
+      >
+        <Route path='create-election' element={<CreateElection />} />
+      </Route>
     </Routes>
   );
 }
