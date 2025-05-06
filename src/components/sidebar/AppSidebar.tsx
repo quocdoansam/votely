@@ -12,9 +12,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { NavUser } from "@/components/nav-user";
-import { NavMain } from "@/components/nav-main";
-import Logo from "../../public/logo.svg";
+import { NavUser } from "@/components/NavUser";
+import { NavMain } from "@/components/NavMain";
+import Logo from "../../../public/logo.svg";
 
 const data = {
   navMain: [

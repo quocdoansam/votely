@@ -6,7 +6,7 @@ import { Github, Loader2 } from "lucide-react";
 import Logo from "../../public/logo.svg";
 import { magic } from "@/lib/magic";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 
 export function LoginForm({

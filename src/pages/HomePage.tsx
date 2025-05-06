@@ -1,22 +1,23 @@
+import { ModeToggle } from "@/components/ModeToggle";
+import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import {
   Breadcrumb,
+  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
 import {
-  SidebarInset,
   SidebarProvider,
+  SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { AppSidebar } from "../app-sidebar";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Outlet, useLocation, Link } from "react-router-dom";
+import { Separator } from "@radix-ui/react-separator";
+import { Link } from "lucide-react";
+import { Outlet, useLocation } from "react-router-dom";
 
-export default function Page() {
+const HomePage = () => {
   const location = useLocation();
 
   const breadcrumbMap: Record<string, { label: string; href?: string }[]> = {
@@ -75,4 +76,6 @@ export default function Page() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default HomePage;
