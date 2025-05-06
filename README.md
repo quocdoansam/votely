@@ -2,6 +2,8 @@
 
 > **I don't know why I build this project**.
 
+**Visit sub-project project [election contract](https://github.com/quocdoansam/election-contract)**
+
 ## **The purpose of the project**
 
 - Learn React.
