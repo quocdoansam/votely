@@ -9,7 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,28 +26,23 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { magic } from "@/lib/magic";
+import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const navigate = useNavigate();
-  const { setIsLoggedIn, setUser, user } = useAuth();
+  const { isLoading, isAuthenticated, user, logout } = useAuth();
 
-  const handleLogout = async () => {
-    try {
-      const isLoggedOut = await magic.user.logout();
-      if (isLoggedOut) {
-        localStorage.removeItem("user-info");
-        setUser(null);
-        setIsLoggedIn(false);
-        navigate("/");
-      }
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
-  };
-
+  if (isLoading) {
+    return <Skeleton className='h-[36px] w-full rounded-md' />;
+  }
+  if (!isAuthenticated) {
+    return (
+      <Button asChild>
+        <a href='/login'>Login</a>
+      </Button>
+    );
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -58,18 +53,10 @@ export function NavUser() {
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
               <Avatar className='h-8 w-8 rounded-lg'>
-                <AvatarImage
-                  src={user?.avatarUrl ?? undefined}
-                  alt={user?.email ?? undefined}
-                />
-                <AvatarFallback className='rounded-lg'>
-                  {user?.email ? user.email.charAt(0).toUpperCase() : "CN"}
-                </AvatarFallback>
+                <AvatarImage src={user?.avatarUrl} />
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-semibold'>
-                  {user?.name ?? user?.email?.split("@")}
-                </span>
+                <span className='truncate font-semibold'>{user?.name}</span>
                 <span className='truncate text-xs'>{user?.email}</span>
               </div>
               <ChevronsUpDown className='ml-auto size-4' />
@@ -84,18 +71,10 @@ export function NavUser() {
             <DropdownMenuLabel className='p-0 font-normal'>
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <Avatar className='h-8 w-8 rounded-lg'>
-                  <AvatarImage
-                    src={user?.avatarUrl ?? undefined}
-                    alt={user?.name ?? user?.email?.split("@").join("")}
-                  />
-                  <AvatarFallback className='rounded-lg'>
-                    {user?.email ? user?.email.charAt(0).toUpperCase() : "CN"}
-                  </AvatarFallback>
+                  <AvatarImage src={user?.avatarUrl} alt='Avatar' />
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-semibold'>
-                    {user?.name ?? user?.email?.split("@")}
-                  </span>
+                  <span className='truncate font-semibold'>{user?.name}</span>
                   <span className='truncate text-xs'>{user?.email}</span>
                 </div>
               </div>
@@ -123,11 +102,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={async () => {
-                await handleLogout();
-              }}
-            >
+            <DropdownMenuItem onClick={async () => logout()}>
               <LogOut />
               Log out
             </DropdownMenuItem>

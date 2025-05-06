@@ -39,7 +39,7 @@ const HomePage = () => {
             <div className='flex items-center gap-2 grow'>
               <SidebarTrigger className='-ml-1' />
               <Separator orientation='vertical' className='mr-2 h-4' />
-              <Breadcrumb>
+              {/* <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((item, index) => (
                     <>
@@ -65,7 +65,7 @@ const HomePage = () => {
                     </>
                   ))}
                 </BreadcrumbList>
-              </Breadcrumb>
+              </Breadcrumb> */}
             </div>
             <ModeToggle />
           </div>

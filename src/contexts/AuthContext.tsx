@@ -8,12 +8,14 @@ import {
 import { magic } from "../lib/magic";
 import { AuthContextType } from "@/types/AuthContextType";
 import { User } from "@/types/User";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const navigator = useNavigate();
 
   const fetchUser = async () => {
     try {
@@ -51,6 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       await magic.user.logout();
+      navigator("/login");
     } catch (err) {
       console.error("Error logging out: ", err);
     } finally {
