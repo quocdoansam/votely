@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Wallet, Boxes } from "lucide-react";
+import { GalleryVerticalEnd, UsersRound } from "lucide-react";
 
 import {
   Sidebar,
@@ -13,56 +13,31 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/NavUser";
-import { NavMain } from "@/components/NavMain";
-import Logo from "../../../public/logo.svg";
+import Logo from "../../public/logo.svg";
+import NavMain from "./NavMain";
 
-const data = {
-  navMain: [
-    {
-      title: "Elections",
-      url: "#",
-      icon: Boxes,
-      isActive: true,
-      items: [
-        {
-          title: "Create an election",
-          url: "/create-election",
-        },
-        {
-          title: "My election",
-          url: "#",
-        },
-        {
-          title: "Ongoing",
-          url: "#",
-        },
-        {
-          title: "Not started",
-          url: "#",
-        },
-        {
-          title: "Ended",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Wallet",
-      url: "#",
-      icon: Wallet,
-      items: [
-        {
-          title: "My wallet",
-          url: "/wallet",
-        },
-        {
-          title: "Why wallet?",
-          url: "/why-wallet",
-        },
-      ],
-    },
-  ],
-};
+const groups = [
+  {
+    title: "Election",
+    items: [
+      {
+        name: "All Elections",
+        url: "/",
+        icon: GalleryVerticalEnd,
+      },
+    ],
+  },
+  {
+    title: "US",
+    items: [
+      {
+        name: "About US",
+        url: "/about-us",
+        icon: UsersRound,
+      },
+    ],
+  },
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -87,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain groups={groups} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

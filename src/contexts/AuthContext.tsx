@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const navigator = useNavigate();
 
@@ -46,13 +46,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Error fetching user: ", err);
       setUser(null);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       await magic.user.logout();
       localStorage.removeItem("user");
       setUser(null);
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.error("Error logging out: ", err);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
