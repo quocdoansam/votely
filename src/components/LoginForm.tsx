@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github, LoaderPinwheel } from "lucide-react";
+import { Loader, User } from "lucide-react";
 import Logo from "../../public/logo.svg";
 import { magic } from "@/lib/magic";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState<string | null>(null);
   const [isEmailLoading, setEmailLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isGoogleLoading, setGoogleLoading] = useState(false);
 
   const { fetchUser } = useAuth();
   const navigator = useNavigate();
@@ -30,7 +30,7 @@ export function LoginForm({
       await fetchUser();
       navigator("/");
     } catch (error) {
-      console.error("Login with email failed: ", error);
+      console.error("Error login with email: ", error);
     } finally {
       setEmailLoading(false);
     }
@@ -38,15 +38,15 @@ export function LoginForm({
 
   const loginWithGoogle = async () => {
     try {
-      setIsGoogleLoading(true);
+      setGoogleLoading(true);
       await magic.oauth2.loginWithRedirect({
         provider: "google",
         redirectURI: `${window.location.origin}/callback`,
-        scope: ["profile", "email"],
+        scope: ["profile", "email", "openid"],
       });
     } catch (error) {
-      console.error("Google login failed:", error);
-      setIsGoogleLoading(false);
+      console.error("Error login with Google:", error);
+      setGoogleLoading(false);
     }
   };
 
@@ -83,9 +83,7 @@ export function LoginForm({
               />
             </div>
             <Button type='submit' className='w-full'>
-              {isEmailLoading && (
-                <LoaderPinwheel className='animate-spin' size={24} />
-              )}
+              {isEmailLoading && <Loader className='animate-spin' size={24} />}
               Login
             </Button>
           </div>
@@ -95,9 +93,11 @@ export function LoginForm({
             </span>
           </div>
           <div className='grid gap-4 sm:grid-cols-2'>
-            <Button variant='outline' className='w-full' type='button'>
-              <Github />
-              Continue with Github
+            <Button variant='outline' className='w-full' type='button' asChild>
+              <a href='/'>
+                <User />
+                Continue as guest
+              </a>
             </Button>
             <Button
               variant='outline'
@@ -106,7 +106,7 @@ export function LoginForm({
               onClick={loginWithGoogle}
             >
               {isGoogleLoading ? (
-                <LoaderPinwheel className='animate-spin' size={24} />
+                <Loader className='animate-spin' size={24} />
               ) : (
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
                   <path

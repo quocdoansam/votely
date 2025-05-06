@@ -52,17 +52,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
+      setIsLoading(true);
       await magic.user.logout();
+      localStorage.removeItem("user");
+      setUser(null);
       navigator("/login");
     } catch (err) {
       console.error("Error logging out: ", err);
     } finally {
-      setUser(null);
-      localStorage.removeItem("user");
       setIsLoading(false);
     }
-    localStorage.removeItem("user");
-    setUser(null);
   };
 
   useEffect(() => {

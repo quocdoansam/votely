@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { magic } from "../lib/magic";
-import { LoaderPinwheel } from "lucide-react";
+import { Loader } from "lucide-react";
 import { User } from "@/types/User";
 
 export default function Callback() {
@@ -48,7 +48,7 @@ export default function Callback() {
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
-      <LoaderPinwheel className='animate-spin' size={64} />
+      <Loader className='animate-spin' size={64} />
     </div>
   );
 }
