@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { magic } from "../lib/magic";
-import { Loader } from "lucide-react";
+import { Badge } from "lucide-react";
 import { User } from "@/types/User";
 
 export default function Callback() {
@@ -48,7 +48,7 @@ export default function Callback() {
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
-      <Loader className='animate-spin' size={64} />
+      <Badge className='animate-[spin_2s_ease_infinite]' size={72} />
     </div>
   );
 }

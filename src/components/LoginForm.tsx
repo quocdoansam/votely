@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader, User } from "lucide-react";
+import { Badge, User } from "lucide-react";
 import Logo from "../../public/logo.svg";
 import { magic } from "@/lib/magic";
 import { useNavigate } from "react-router-dom";
@@ -83,7 +83,9 @@ export function LoginForm({
               />
             </div>
             <Button type='submit' className='w-full'>
-              {isEmailLoading && <Loader className='animate-spin' size={24} />}
+              {isEmailLoading && (
+                <Badge className='animate-[spin_2s_ease_infinite]' size={24} />
+              )}
               Login
             </Button>
           </div>
@@ -106,7 +108,7 @@ export function LoginForm({
               onClick={loginWithGoogle}
             >
               {isGoogleLoading ? (
-                <Loader className='animate-spin' size={24} />
+                <Badge className='animate-[spin_2s_ease_infinite]' size={24} />
               ) : (
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
                   <path
