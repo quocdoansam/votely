@@ -1,6 +1,13 @@
 "use client";
 import * as React from "react";
-import { GalleryVerticalEnd, UsersRound } from "lucide-react";
+import {
+  CalendarCheck2,
+  CalendarClock,
+  CalendarX2,
+  GalleryVerticalEnd,
+  UserRoundSearch,
+  UsersRound,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -25,6 +32,21 @@ const groups = [
         url: "/",
         icon: GalleryVerticalEnd,
       },
+      {
+        name: "Not Started",
+        url: "/elections/not-started",
+        icon: CalendarX2,
+      },
+      {
+        name: "On Going",
+        url: "/elections/on-going",
+        icon: CalendarClock,
+      },
+      {
+        name: "Ended",
+        url: "/elections/ended",
+        icon: CalendarCheck2,
+      },
     ],
   },
   {
@@ -34,6 +56,11 @@ const groups = [
         name: "About US",
         url: "/about-us",
         icon: UsersRound,
+      },
+      {
+        name: "Contacts",
+        url: "/contact",
+        icon: UserRoundSearch,
       },
     ],
   },
