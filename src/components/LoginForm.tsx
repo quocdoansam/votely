@@ -2,11 +2,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github, Loader2 } from "lucide-react";
+import { Github, Loader2, LoaderPinwheel } from "lucide-react";
 import Logo from "../../public/logo.svg";
 import { magic } from "@/lib/magic";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 
 export function LoginForm({
@@ -14,44 +14,31 @@ export function LoginForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { setIsLoggedIn, setUser } = useAuth();
+  const [isEmailLoading, setEmailLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  const { fetchUser } = useAuth();
   const navigator = useNavigate();
 
   const handleLogin = async () => {
     if (!email) return;
     try {
-      setIsLoading(true);
+      setEmailLoading(true);
 
       await magic.auth.loginWithMagicLink({ email });
-      const metadata = await magic.user.getInfo();
-      if (metadata) {
-        const user = {
-          name: metadata.email?.split("@")[0] ?? null,
-          email: metadata.email,
-          avatarUrl: metadata.email?.charAt(0) ?? null,
-          publicAddress: metadata.publicAddress,
-        };
 
-        localStorage.setItem("user-info", JSON.stringify(user));
-        setUser(user);
-        setIsLoggedIn(true);
-
-        navigator("/");
-      } else {
-        setUser(null);
-        setIsLoggedIn(false);
-      }
+      await fetchUser();
+      navigator("/");
     } catch (error) {
       console.error("Login with email failed: ", error);
     } finally {
-      setIsLoading(false);
+      setEmailLoading(false);
     }
   };
 
   const loginWithGoogle = async () => {
     try {
-      setIsLoading(true);
+      setIsGoogleLoading(true);
       await magic.oauth2.loginWithRedirect({
         provider: "google",
         redirectURI: `${window.location.origin}/callback`,
@@ -59,8 +46,7 @@ export function LoginForm({
       });
     } catch (error) {
       console.error("Google login failed:", error);
-    } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -97,7 +83,9 @@ export function LoginForm({
               />
             </div>
             <Button type='submit' className='w-full'>
-              {isLoading && <Loader2 className='animate-spin' />}
+              {isEmailLoading && (
+                <LoaderPinwheel className='animate-spin' size={24} />
+              )}
               Login
             </Button>
           </div>
@@ -117,8 +105,8 @@ export function LoginForm({
               type='button'
               onClick={loginWithGoogle}
             >
-              {isLoading ? (
-                <Loader2 className='animate-spin' />
+              {isGoogleLoading ? (
+                <LoaderPinwheel className='animate-spin' size={24} />
               ) : (
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
                   <path

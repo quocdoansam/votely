@@ -1,7 +1,6 @@
-import LoginPage from "@/app/login/page";
 import CreateElectionPage from "@/pages/CreateElectionPage";
 import HomePage from "@/pages/HomePage";
-import React from "react";
+import LoginPage from "@/pages/LoginPage";
 import { Route, Routes } from "react-router-dom";
 
 const AppRouter = () => {

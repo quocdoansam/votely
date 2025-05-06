@@ -1,30 +1,33 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { magic } from "../lib/magic";
-import { Loader2 } from "lucide-react";
+import { LoaderPinwheel } from "lucide-react";
+import { User } from "@/types/User";
 
 export default function Callback() {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUser } = useAuth();
+  const { fetchUser } = useAuth();
 
   useEffect(() => {
     (async () => {
       try {
         const result = await magic.oauth2.getRedirectResult({});
+
         const userInfo = result.oauth.userInfo;
         const metadata = await magic.user.getInfo();
 
-        const user = {
-          name: userInfo.name ?? null,
-          avatarUrl: userInfo.picture ?? null,
-          email: userInfo.email ?? null,
-          publicAddress: metadata.publicAddress,
+        const fortmattedUser: User = {
+          name: userInfo.name ?? userInfo.email?.split("@")[0] ?? "Unknown",
+          email: userInfo.email ?? metadata.email ?? "",
+          walletAddress: metadata.publicAddress || "",
+          avatarUrl:
+            userInfo.picture ??
+            `https://api.dicebear.com/6.x/identicon/svg?seed=${userInfo.publicAddress}`,
         };
 
-        localStorage.setItem("user-info", JSON.stringify(user));
-        setUser(user);
-        setIsLoggedIn(true);
+        localStorage.setItem("user", JSON.stringify(fortmattedUser));
+        await fetchUser();
 
         navigate("/");
       } catch (err: any) {
@@ -33,15 +36,7 @@ export default function Callback() {
           err?.message?.includes("Skipped remaining OAuth verification steps.")
         ) {
           console.warn("Already logged in, skipping redirect handling.");
-          const metadata = await magic.user.getInfo();
-          const user = {
-            name: metadata.email?.split("@")[0] ?? null,
-            avatarUrl: metadata.email?.charAt(0) ?? null,
-            email: metadata.email,
-            publicAddress: metadata.publicAddress,
-          };
-          setUser(user);
-          setIsLoggedIn(true);
+          await fetchUser();
           navigate("/");
         } else {
           console.error("OAuth callback error:", err);
@@ -53,7 +48,7 @@ export default function Callback() {
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
-      <Loader2 className='animate-spin' />
+      <LoaderPinwheel className='animate-spin' size={64} />
     </div>
   );
 }
