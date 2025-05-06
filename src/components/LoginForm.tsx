@@ -69,7 +69,7 @@ export function LoginForm({
               </div>
               <span className='sr-only'>Votely.</span>
             </a>
-            <h1 className='text-xl font-bold'>Welcome to Votely.</h1>
+            <h1 className='text-2xl font-bold'>Welcome to Votely.</h1>
           </div>
           <div className='flex flex-col gap-6'>
             <div className='grid gap-2'>
