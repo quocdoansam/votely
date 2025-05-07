@@ -8,7 +8,7 @@ import {
 import { Separator } from "@radix-ui/react-separator";
 import { Outlet } from "react-router-dom";
 
-const HomePage = () => {
+const DashboardLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -30,4 +30,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default DashboardLayout;

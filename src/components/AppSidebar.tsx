@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
 import {
+  BadgePlus,
+  BookOpenText,
   CalendarCheck2,
   CalendarClock,
   CalendarX2,
@@ -25,11 +27,26 @@ import NavMain from "./NavMain";
 
 const groups = [
   {
+    title: "Content Overview",
+    items: [
+      {
+        name: "Overview",
+        url: "/",
+        icon: BookOpenText,
+      },
+    ],
+  },
+  {
     title: "Election",
     items: [
       {
+        name: "Create An Election",
+        url: "/elections/create",
+        icon: BadgePlus,
+      },
+      {
         name: "All Elections",
-        url: "/",
+        url: "/elections",
         icon: GalleryVerticalEnd,
       },
       {
