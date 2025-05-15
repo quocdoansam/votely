@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { CirclePlus, X } from "lucide-react";
+import { Badge, CirclePlus, Info, Terminal, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AlertDialog } from "../ui/alert-dialog";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 const CreateElectionForm = () => {
   const [title, setTitle] = useState("");
@@ -13,7 +15,7 @@ const CreateElectionForm = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleOptionChange = (index: number, value: string) => {
@@ -103,31 +105,39 @@ const CreateElectionForm = () => {
         />
       </div>
 
-      <label>
-        <input
-          type='checkbox'
-          checked={isPrivate}
-          onChange={(e) => setIsPrivate(e.target.checked)}
-        />{" "}
-        Bầu cử riêng tư
-      </label>
       <div className='items-top flex space-x-2'>
-        <Checkbox id='terms1' />
+        <Checkbox
+          id='terms1'
+          checked={isPrivate}
+          onCheckedChange={(checked) => setIsPrivate(!!checked)}
+        />
         <div className='grid gap-1.5 leading-none'>
           <label
             htmlFor='terms1'
             className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
-            Accept terms and conditions
+            Everyone
           </label>
           <p className='text-sm text-muted-foreground'>
-            You agree to our Terms of Service and Privacy Policy.
+            Anyone can join this election
           </p>
         </div>
       </div>
 
-      <Button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Đang tạo..." : "Tạo bầu cử"}
+      {error && (
+        <Alert variant={"destructive"}>
+          <Info className='h-4 w-4' />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <Button onClick={handleSubmit} disabled={isLoading}>
+        {isLoading ? (
+          <Badge className='animate-[spin_2s_ease_infinite]' size={24} />
+        ) : (
+          "Create"
+        )}
       </Button>
     </div>
   );
