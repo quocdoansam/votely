@@ -1,5 +1,5 @@
 const Divider = () => {
-  return <hr className='my-4 text-secondary' />;
+  return <hr className='text-secondary' />;
 };
 
 export default Divider;

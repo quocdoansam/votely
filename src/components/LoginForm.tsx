@@ -65,7 +65,7 @@ export function LoginForm() {
       </form>
       <Divider />
       <div className='grid grid-rows-1 md:grid-cols-2 gap-2'>
-        <Button variant='outline' size='sm' onClick={loginWithGoogle}>
+        <Button variant='secondary' size='md' onClick={loginWithGoogle}>
           {isGoogleLoading ? (
             <Loader className='animate-spin' />
           ) : (
@@ -74,7 +74,7 @@ export function LoginForm() {
             </>
           )}
         </Button>
-        <Button variant='outline' size='sm' onClick={() => navigator("/")}>
+        <Button variant='secondary' size='md' onClick={() => navigator("/")}>
           <User2 /> Continue without login
         </Button>
       </div>

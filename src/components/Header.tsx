@@ -9,10 +9,10 @@ import { Menu } from "lucide-react";
 const Header = () => {
   const { isTablet, isDesktop } = useResponsive();
   return (
-    <div className='flex flex-row p-4'>
+    <div className='flex flex-row p-4 items-center'>
       <div className='flex flex-row gap-2 sm:gap-6'>
         {!isDesktop && (
-          <Button variant='secondary' size='icon'>
+          <Button variant='text' size='icon'>
             <Menu />
           </Button>
         )}
