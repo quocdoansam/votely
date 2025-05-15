@@ -1,6 +1,6 @@
-import { Election } from "@/types/Election";
-import { ElectionStatus } from "@/types/ElectionStatus";
 import { useEffect, useState } from "react";
+import { ElectionStatus } from "../../types/ElectionStatus";
+import { Election } from "../../types/Election";
 
 const ElectionList = ({ status }: { status: ElectionStatus }) => {
   const [elections, setElections] = useState<Election[]>([]);

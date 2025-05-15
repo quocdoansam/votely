@@ -1,12 +1,4 @@
 import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Badge, CirclePlus, Info, Terminal, X } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { AlertDialog } from "../ui/alert-dialog";
-import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 const CreateElectionForm = () => {
   const [title, setTitle] = useState("");
@@ -39,106 +31,6 @@ const CreateElectionForm = () => {
   return (
     <div className='space-y-5 max-w-2xl flex flex-col mx-auto'>
       <h1 className='text-2xl font-semibold'>CREATE AN ELECTION</h1>
-
-      <div className='grid gap-2'>
-        <Label htmlFor='title'>Title</Label>
-        <Input
-          id='title'
-          type='text'
-          placeholder='Type title here'
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className='grid gap-2'>
-        <Label htmlFor='desc'>Description</Label>
-        <Textarea
-          placeholder='Type description here.'
-          id='desc'
-          onChange={(e) => setDesc(e.target.value)}
-        />
-      </div>
-
-      {options.map((opt, i) => (
-        <div className='flex flex-row gap-2'>
-          <Input
-            key={i}
-            placeholder={`Option ${i + 1}`}
-            value={opt}
-            onChange={(e) => handleOptionChange(i, e.target.value)}
-            translate='yes'
-          />
-          <Button
-            disabled={options.length <= 2}
-            size='icon'
-            variant='destructive'
-            onClick={() => handleRemoveOption(i)}
-          >
-            <X />
-          </Button>
-        </div>
-      ))}
-      <Button
-        variant={"secondary"}
-        onClick={() => setOptions([...options, ""])}
-      >
-        <CirclePlus /> Add option
-      </Button>
-
-      <div className='grid gap-2'>
-        <Label htmlFor='start'>Start time</Label>
-        <Input
-          id='start'
-          type='datetime-local'
-          onChange={(e) => setStartTime(e.target.value)}
-          required
-        />
-      </div>
-      <div className='grid gap-2'>
-        <Label htmlFor='end'>End time</Label>
-        <Input
-          id='end'
-          type='datetime-local'
-          onChange={(e) => setEndTime(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className='items-top flex space-x-2'>
-        <Checkbox
-          id='terms1'
-          checked={isPrivate}
-          onCheckedChange={(checked) => setIsPrivate(!!checked)}
-        />
-        <div className='grid gap-1.5 leading-none'>
-          <label
-            htmlFor='terms1'
-            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-          >
-            Everyone
-          </label>
-          <p className='text-sm text-muted-foreground'>
-            Anyone can join this election
-          </p>
-        </div>
-      </div>
-
-      {error && (
-        <Alert variant={"destructive"}>
-          <Info className='h-4 w-4' />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      <Button onClick={handleSubmit} disabled={isLoading}>
-        {isLoading ? (
-          <Badge className='animate-[spin_2s_ease_infinite]' size={24} />
-        ) : (
-          "Create"
-        )}
-      </Button>
     </div>
   );
 };

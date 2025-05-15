@@ -1,4 +1,4 @@
-import CreateElectionForm from "@/components/election/CreateElectionForm";
+import CreateElectionForm from "../components/election/CreateElectionForm";
 
 const CreateElectionPage = () => {
   return (

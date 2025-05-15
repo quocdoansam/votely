@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { magic } from "../lib/magic";
 import { Badge } from "lucide-react";
-import { User } from "@/types/User";
+import { User } from "../types/User";
 
 export default function Callback() {
   const navigate = useNavigate();

@@ -6,9 +6,9 @@ import {
   ReactNode,
 } from "react";
 import { magic } from "../lib/magic";
-import { AuthContextType } from "@/types/AuthContextType";
-import { User } from "@/types/User";
 import { useNavigate } from "react-router-dom";
+import { AuthContextType } from "../types/AuthContextType";
+import { User } from "../types/User";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

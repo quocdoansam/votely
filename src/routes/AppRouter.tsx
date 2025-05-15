@@ -1,9 +1,9 @@
-import Callback from "@/pages/Callback";
-import CreateElectionPage from "@/pages/CreateElectionPage";
-import DashboardLayout from "@/layouts/DashboardLayout";
-import LoginPage from "@/pages/LoginPage";
 import { Route, Routes } from "react-router-dom";
-import OverviewPage from "@/pages/OverviewPage";
+import LoginPage from "../pages/LoginPage";
+import Callback from "../pages/Callback";
+import CreateElectionPage from "../pages/CreateElectionPage";
+import DashboardLayout from "../layouts/DashboardLayout";
+import OverviewPage from "../pages/OverviewPage";
 
 const AppRouter = () => {
   return (
