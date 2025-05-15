@@ -1,14 +1,16 @@
-interface LogoProps {
-  size?: number;
-}
+import React from "react";
 
-const Logo = ({ size = 64 }: LogoProps) => {
+interface LogoProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+
+const Logo = ({ className = "", ...props }: LogoProps) => {
   return (
-    <img
-      src='./logo.svg'
-      alt='Logo'
-      style={{ width: `${size}px`, height: `${size}px` }}
-    />
+    <h1
+      style={{ fontFamily: "Pacifico", cursor: "pointer" }}
+      {...props}
+      className={className}
+    >
+      Votely
+    </h1>
   );
 };
 
