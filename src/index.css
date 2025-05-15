@@ -3,7 +3,7 @@
 
 @theme {
   --color-primary: #007cf0;
-  --color-secondary: #c0c0c0;
+  --color-secondary: #dadada;
   --color-danger: #ff3d3d;
   --color-warning: #ffbb00;
   --color-success: #00af00;
@@ -13,7 +13,7 @@
 
 :root {
   --primary-color: #007cf0;
-  --secondary-color: #c0c0c0;
+  --secondary-color: #dadada;
   --danger-color: #ff3d3d;
   --warning-color: #ffbb00;
   --success-color: #00af00;
