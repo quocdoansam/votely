@@ -16,28 +16,28 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 function getSize(size: string) {
   switch (size) {
     case "icon":
-      return "font-semibold w-10 h-10 rounded-xl shadow-sm active:scale-95";
+      return "font-semibold w-10 h-10 rounded-xl active:scale-95";
     case "sm":
-      return "font-semibold text-sm px-3 py-2 shadow-sm rounded-xl active:scale-98";
+      return "font-extrabold text-sm px-3 py-2 rounded-xl active:scale-98";
     case "lg":
-      return "font-semibold text-lg px-3 py-2 shadow-sm rounded-xl active:scale-99";
+      return "font-semibold text-lg px-3 py-2 rounded-xl active:scale-99";
     default: // medium size
-      return "font-semibold text-base px-3 py-2 shadow-sm rounded-xl active:scale-99";
+      return "font-semibold text-base px-3 py-2 rounded-xl active:scale-99";
   }
 }
 
 function getVariant(variant: string) {
   switch (variant) {
     case "secondary":
-      return "bg-secondary text-white shadow-secondary";
+      return "bg-secondary text-gray-900 shadow-sm shadow-secondary";
     case "danger":
-      return "bg-danger text-white shadow-danger";
+      return "bg-danger text-white shadow-sm shadow-danger";
     case "warning":
-      return "bg-warning text-gray shadow-warning";
+      return "bg-warning text-gray shadow-sm shadow-warning";
     case "outline":
-      return "bg-transparent border-2 border-secondary hover:bg-secondary";
+      return "bg-transparent border-2 shadow-sm border-secondary hover:bg-secondary";
     case "text":
-      return "bg-transparent hover:bg-secondary";
+      return "bg-background hover:bg-secondary shadow-none";
     case "link":
       return "bg-transparent hover:text-underline-offset-1";
     default: // variant primary
