@@ -1,11 +1,5 @@
-import CreateElectionForm from "../components/election/CreateElectionForm";
-
 const CreateElectionPage = () => {
-  return (
-    <div className=''>
-      <CreateElectionForm />
-    </div>
-  );
+  return <div className=''></div>;
 };
 
 export default CreateElectionPage;
