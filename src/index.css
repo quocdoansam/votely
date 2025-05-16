@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pacifico&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -24,7 +24,7 @@
 
 
 body {
-  font-family: monospace;
+  font-family: 'JetBrains Mono';
   background-image: linear-gradient(rgb(229 231 235) 1px, transparent 1px), linear-gradient(to right, rgb(229 231 235) 1px, transparent 1px);
   background-size: 100px 100px;
   background-color: rgb(249 250 251);
