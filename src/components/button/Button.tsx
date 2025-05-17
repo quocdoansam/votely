@@ -41,7 +41,7 @@ function getVariant(variant: string) {
     case "link":
       return "bg-transparent hover:text-underline-offset-1";
     default: // variant primary
-      return "bg-primary text-white shadow-primary";
+      return "bg-primary text-white shadow-sm shadow-primary";
   }
 }
 
