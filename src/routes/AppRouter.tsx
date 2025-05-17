@@ -10,7 +10,7 @@ const AppRouter = () => {
     <Routes>
       <Route path='/' element={<MainLayout />}>
         <Route path='/' element={<OverviewPage />} />
-        <Route path='elections/create' element={<CreateElectionPage />} />
+        <Route path='/elections/create' element={<CreateElectionPage />} />
       </Route>
       <Route path='/login' element={<LoginPage />} />
       <Route path='/callback' element={<Callback />} />
