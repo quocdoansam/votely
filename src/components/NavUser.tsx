@@ -28,8 +28,9 @@ const NavUser = () => {
 
   if (isLoading) {
     return (
-      <div className='flex flex-row gap-2 ml-auto'>
-        <div className='w-30 h-10 animate-pulse bg-secondary rounded-xl'></div>
+      <div className='flex flex-row gap-2 ml-auto animate-pulse'>
+        <div className='w-20 h-10 bg-secondary rounded-xl' />
+        <div className='w-10 h-10 bg-secondary rounded-xl' />
       </div>
     );
   }
@@ -86,17 +87,12 @@ const NavUser = () => {
             </h1>
             <Divider />
             <li className='m-2 rounded-xl font-semibold text-base px-4 py-2 hover:bg-secondary cursor-pointer'>
-              Thông tin cá nhân
-            </li>
-            <Divider />
-            <li className='m-2 rounded-xl font-semibold text-base px-4 py-2 hover:bg-secondary cursor-pointer'>
-              Thông tin cá nhân
+              Profile
             </li>
             <li className='m-2 rounded-xl font-semibold text-base px-4 py-2 hover:bg-secondary cursor-pointer'>
-              Cài đặt
+              My elections
             </li>
             <Divider />
-
             <li
               className='m-2 rounded-xl text-danger font-semibold text-base px-4 py-2 hover:bg-secondary cursor-pointer'
               onClick={logout}
