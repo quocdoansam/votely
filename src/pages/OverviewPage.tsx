@@ -1,7 +1,11 @@
+import ElectionList from "../components/election/ElectionList";
+import Gretting from "../components/landing/Gretting";
+
 const OverviewPage = () => {
   return (
-    <div className=''>
-      <h1 className='text-5xl'>Hello world</h1>
+    <div className='flex flex-col mx-auto'>
+      <Gretting />
+      <ElectionList status='ongoing' />
     </div>
   );
 };

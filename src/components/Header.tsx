@@ -25,7 +25,7 @@ const Header = () => {
             <NavMain />
           </>
         )}
-        {isTablet && <SearchBar />}
+        {isTablet && <SearchBar className='max-w-72' />}
       </div>
       <NavUser />
     </div>

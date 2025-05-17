@@ -1,8 +1,13 @@
 import { Search } from "lucide-react";
 
-const SearchBar = () => {
+interface SearchBarProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const SearchBar = ({ className = "", ...props }: SearchBarProps) => {
   return (
-    <div className='flex flex-row flex-1 items-center border-2 border-secondary rounded-xl text-base font-semibold min-w-72 max-w-xl'>
+    <div
+      className={`bg-white flex flex-row flex-1 items-center border-2 border-secondary rounded-xl text-base font-semibold min-w-72 ${className}`}
+      {...props}
+    >
       <input
         type='text'
         placeholder='Type the election ID'

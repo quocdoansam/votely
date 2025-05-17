@@ -51,22 +51,18 @@ const NavUser = () => {
 
   return (
     <div className='flex flex-row gap-2 ml-auto'>
-      {!isDesktop ? (
-        <>
-          {isMobile && (
-            <Button variant='secondary' size='icon'>
-              <Search />
-            </Button>
-          )}
-          <Button variant='secondary' size='icon'>
-            <PlusCircle />
-          </Button>
-        </>
-      ) : (
-        <Button variant='secondary' size='md' className='h-10'>
-          Create election
+      {isMobile && (
+        <Button variant='secondary' size='icon'>
+          <Search />
         </Button>
       )}
+      <Button
+        variant='secondary'
+        size={isDesktop ? "md" : "icon"}
+        onClick={() => navigator("/elections/create")}
+      >
+        {isDesktop ? "Create election" : <PlusCircle />}
+      </Button>
 
       <div className='relative' ref={dropdownRef}>
         <Button

@@ -1,3 +1,1 @@
-export type ElectionStatus = {
-  status: "not_started" | "ongoing" | "ended" | "all";
-};
+export type ElectionStatus = "ongoing" | "ended" | "not_started";
