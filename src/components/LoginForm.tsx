@@ -4,19 +4,27 @@ import { useNavigate } from "react-router-dom";
 import { magic } from "../lib/magic";
 import Button from "./button/Button";
 import Input from "./input/Input";
-import { Goal, Loader, User2 } from "lucide-react";
 import Divider from "./Divider";
+import InputGroup from "./input/InputGroup";
+import Alert from "./Alert";
+import GoogleIcon from "../assets/icons/google.svg";
 
 export function LoginForm() {
   const [email, setEmail] = useState<string | null>(null);
   const [isEmailLoading, setEmailLoading] = useState(false);
   const [isGoogleLoading, setGoogleLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const { fetchUser } = useAuth();
   const navigator = useNavigate();
 
   const handleLogin = async () => {
-    if (!email) return;
+    setError("");
+
+    if (!email) {
+      setError("This field is required.");
+      return;
+    }
     try {
       setEmailLoading(true);
 
@@ -37,7 +45,6 @@ export function LoginForm() {
       await magic.oauth2.loginWithRedirect({
         provider: "google",
         redirectURI: `${window.location.origin}/callback`,
-        scope: ["profile", "email", "openid"],
       });
     } catch (error) {
       console.error("Error login with Google:", error);
@@ -54,30 +61,38 @@ export function LoginForm() {
           handleLogin();
         }}
       >
-        <Input
-          placeholder='Enter your email'
-          type='email'
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <InputGroup>
+          <label htmlFor='email'>Email</label>
+          <Input
+            id='email'
+            placeholder='votely@example.com'
+            type='email'
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </InputGroup>
+
+        {error && <Alert variant='danger'>{error}</Alert>}
+
         <Button variant='primary' size='md'>
-          {isEmailLoading ? <Loader className='animate-spin' /> : "Login"}
+          {isEmailLoading ? "LOGGING ..." : "LOGIN"}
         </Button>
       </form>
       <Divider />
-      <div className='grid grid-rows-1 md:grid-cols-2 gap-2'>
-        <Button variant='secondary' size='md' onClick={loginWithGoogle}>
-          {isGoogleLoading ? (
-            <Loader className='animate-spin' />
-          ) : (
-            <>
-              <Goal /> Continue with Google
-            </>
-          )}
-        </Button>
-        <Button variant='secondary' size='md' onClick={() => navigator("/")}>
-          <User2 /> Continue without login
-        </Button>
-      </div>
+      <Button
+        variant='secondary'
+        size='md'
+        onClick={loginWithGoogle}
+        className='justify-between'
+      >
+        {isGoogleLoading ? (
+          "Please wait ..."
+        ) : (
+          <>
+            <img src={GoogleIcon} alt='Google' className='size-6' />
+            Continue with Google
+          </>
+        )}
+      </Button>
       <div className='text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary py-6'>
         By clicking continue, you agree to our <a href='#'>Terms of Service</a>{" "}
         and <a href='#'>Privacy Policy</a>.
