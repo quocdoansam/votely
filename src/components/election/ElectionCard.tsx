@@ -3,6 +3,7 @@ import getElectionContract from "../../lib/contract";
 import { getSigner } from "../../lib/magic";
 import { Election } from "../../types/Election";
 import { Timer, TimerOff } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ElectionCard = ({ election }: { election: Election }) => {
   const [results, setResults] = useState<number[] | null>(null);
@@ -18,8 +19,8 @@ const ElectionCard = ({ election }: { election: Election }) => {
   }, []);
 
   return (
-    <a
-      href={`/elections/${election.id}`}
+    <Link
+      to={`/elections/${election.id}`}
       className='bg-white border-2 border-secondary flex flex-col p-4 rounded-2xl hover:border-primary active:scale-95 transition gap-4'
     >
       <div className='flex flex-col gap-1'>
@@ -53,7 +54,7 @@ const ElectionCard = ({ election }: { election: Election }) => {
       <div className='overflow-clip text-ellipsis whitespace-nowrap rounded-xl bg-secondary p-2'>
         by {election.creator}
       </div>
-    </a>
+    </Link>
   );
 };
 
