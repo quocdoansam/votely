@@ -8,23 +8,54 @@ import ElectionDetailSkeleton from "../skeleton/ElectionDetailSkeleton";
 import Button from "../button/Button";
 import { Copy, CopyCheckIcon, Share2 } from "lucide-react";
 import Input from "../input/Input";
+import Alert from "../Alert";
 
 const SurveyDetails = () => {
   const { id } = useParams();
   const [election, setElection] = useState<Election | null>(null);
   const [copied, setCopied] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isLoading, setLoading] = useState(false);
+
+  const signer = getSigner();
+  const contract = getElectionContract(signer);
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
-  useEffect(() => {
-    const fetchElectionMetadata = async () => {
-      if (!id) return;
 
+  const handleVote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (!selectedOption) {
+      setError("Please, choose at least 1 option.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const voteTx = await contract.vote(id, selectedOption);
+      await voteTx.wait();
+      setSuccess("Voted successfully.");
+    } catch (err) {
+      console.error("Voting error:", err);
+      setError("Vote failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchElectionMetadata = async () => {
       try {
-        const signer = getSigner();
-        const contract = getElectionContract(signer);
         const meta = await contract.getElectionMetadata(id);
         setElection({
           id,
@@ -36,13 +67,13 @@ const SurveyDetails = () => {
           startTime: new Date(Number(meta.startTIme) * 1000),
           endTime: new Date(Number(meta.endTime) * 1000),
         });
-      } catch (error) {
-        console.error("Failed to fetch election metadata:", error);
+      } catch (err) {
+        console.error("Failed to fetch election metadata:", err);
       }
     };
 
     fetchElectionMetadata();
-  }, [id]);
+  }, [contract, id]);
 
   if (!id) return <NotFoundPage />;
   if (!election)
@@ -58,49 +89,47 @@ const SurveyDetails = () => {
         <h1 className='text-xl md:text-2xl font-semibold'>{election.title}</h1>
         <span>{election.desc}</span>
       </div>
-      <form className='flex flex-col'>
+
+      <form className='flex flex-col' onSubmit={handleVote}>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
-          {Array.isArray(election.options) &&
-            election.options.map((option, index) => (
-              <div key={index}>
-                <input
-                  type='radio'
-                  id={`opt${index}`}
-                  name='voteOption'
-                  value={option}
-                  className='hidden peer'
-                  required
-                />
-                <label
-                  htmlFor={`opt${index}`}
-                  className='inline-flex text-base font-bold items-center justify-between w-full px-5 py-2 text-gray-900 bg-white border-2 outline-primary border-secondary rounded-2xl cursor-pointer peer-checked:outline-2 peer-checked:text-primary outline-offset-3 transiton'
-                >
-                  {option}
-                </label>
-              </div>
-            ))}
+          {election.options.map((option, index) => (
+            <div key={index}>
+              <input
+                type='radio'
+                id={`opt${index}`}
+                name='voteOption'
+                value={option}
+                className='hidden peer'
+                onChange={() => setSelectedOption(option)}
+              />
+              <label
+                htmlFor={`opt${index}`}
+                className='inline-flex text-base font-bold items-center justify-between w-full px-5 py-2 text-gray-900 bg-white border-2 outline-primary border-secondary rounded-2xl cursor-pointer peer-checked:outline-2 peer-checked:text-primary outline-offset-3 transition'
+              >
+                {option}
+              </label>
+            </div>
+          ))}
         </div>
+
+        {error && <Alert variant='danger'>{error}</Alert>}
+        {success && <Alert variant='success'>{success}</Alert>}
+
         <div className='flex flex-row py-10 gap-4'>
           <Button
+            type='submit'
             variant='primary'
             size='md'
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
+            disabled={isLoading}
           >
-            Submit
+            {isLoading ? "Wait ..." : "Vote"}
           </Button>
-          <Button
-            variant='secondary'
-            size='md'
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <Button type='button' variant='secondary' size='md'>
             View Results
           </Button>
         </div>
       </form>
+
       <div className='flex bg-secondary/50 flex-col p-4 rounded-xl items-start gap-4'>
         <div className='flex flex-row gap-2'>
           <Share2 size={24} />
