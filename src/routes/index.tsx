@@ -1,12 +1,12 @@
 import Callback from "../pages/Callback";
 import CreateSurvey from "../pages/dashboard/CreateSurvey";
-import Dashboard from "../pages/dashboard/Dashboard";
 import Error404 from "../pages/errors/Error404";
 import Login from "../pages/Login";
 import MainLayout from "../layouts/MainLayout";
 import SurveyDetails from "../components/survey/SurvayDetail";
 import Setting from "../pages/dashboard/Setting";
 import Profile from "../pages/user/Profile";
+import Dashboard from "../pages/dashboard/DashBoard";
 
 const routes = [
   {
