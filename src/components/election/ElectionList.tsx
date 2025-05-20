@@ -3,9 +3,8 @@ import { ElectionStatus } from "../../types/ElectionStatus";
 import { Election } from "../../types/Election";
 import { getSigner } from "../../lib/magic";
 import getElectionContract from "../../lib/contract";
-import ElectionCard from "./ElectionCard";
 import ElectionCardSkeleton from "../skeleton/ElectionCardSkeleton";
-import FilterElection from "./FilterElection";
+import SurveyCard from "../survey/SurvayCard";
 
 const ElectionList = ({ status }: { status: ElectionStatus }) => {
   const [elections, setElections] = useState<Election[]>([]);
@@ -65,16 +64,13 @@ const ElectionList = ({ status }: { status: ElectionStatus }) => {
     return <p className='mx-auto'>No election yet.</p>;
 
   return (
-    <>
-      <FilterElection />
-      <div className='columns-1 md:columns-2 lg:columns-3 gap-4'>
-        {elections.map((election) => (
-          <div key={election.id} className='break-inside-avoid mb-4'>
-            <ElectionCard election={election} />
-          </div>
-        ))}
-      </div>
-    </>
+    <div className='columns-1 md:columns-2 lg:columns-3 gap-4'>
+      {elections.map((election) => (
+        <div key={election.id} className='break-inside-avoid mb-4'>
+          <SurveyCard election={election} />
+        </div>
+      ))}
+    </div>
   );
 };
 

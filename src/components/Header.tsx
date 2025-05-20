@@ -1,34 +1,22 @@
-import Logo from "./landing/Logo";
-import NavMain from "./NavMain";
-import NavUser from "./NavUser";
-import SearchBar from "./input/SearchBar";
 import { useResponsive } from "../hooks/useResponsive";
-import Button from "./button/Button";
-import { Menu } from "lucide-react";
+import Logo from "./landing/Logo";
+import NavMain from "./navigations/NavMain";
+import NavUser from "./navigations/NavUser";
 
 const Header = () => {
-  const { isTablet, isDesktop } = useResponsive();
+  const { isMobile } = useResponsive();
   return (
-    <div className='flex flex-row p-4 items-center'>
-      <div className='flex flex-row gap-2 sm:gap-6'>
-        {!isDesktop && (
-          <Button variant='text' size='icon'>
-            <Menu />
-          </Button>
-        )}
-        <a href='/' className='text-3xl'>
-          <Logo />
-        </a>
-        {isDesktop && (
-          <>
-            <SearchBar />
-            <NavMain />
-          </>
-        )}
-        {isTablet && <SearchBar className='max-w-72' />}
+    <header className='py-4'>
+      <div className='flex flex-row justify-between items-center'>
+        <div className='flex gap-10 lg:gap-20'>
+          <a href='/'>
+            <Logo />
+          </a>
+          {!isMobile && <NavMain />}
+        </div>
+        <NavUser />
       </div>
-      <NavUser />
-    </div>
+    </header>
   );
 };
 

@@ -1,17 +1,23 @@
-import { Home } from "lucide-react";
 import Callback from "../pages/Callback";
 import CreateSurvey from "../pages/dashboard/CreateSurvey";
-import DashBoard from "../pages/dashboard/DashBoard";
+import Dashboard from "../pages/dashboard/Dashboard";
 import Error404 from "../pages/errors/Error404";
 import Login from "../pages/Login";
+import MainLayout from "../layouts/MainLayout";
+import SurveyDetails from "../components/survey/SurvayDetail";
+import Setting from "../pages/dashboard/Setting";
+import Profile from "../pages/user/Profile";
 
 const routes = [
   {
     path: "/",
-    element: <DashBoard />,
+    element: <MainLayout />,
     children: [
-      { path: "", element: <Home /> },
-      { path: "create-survey", element: <CreateSurvey /> },
+      { path: "", element: <Dashboard /> },
+      { path: "create", element: <CreateSurvey /> },
+      { path: "settings", element: <Setting /> },
+      { path: "profile", element: <Profile /> },
+      { path: "surveys/:id", element: <SurveyDetails /> },
     ],
   },
   {

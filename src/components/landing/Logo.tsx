@@ -1,16 +1,18 @@
-import React from "react";
+import type { ImgHTMLAttributes } from "react";
 
-interface LogoProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+interface LogoProps extends ImgHTMLAttributes<HTMLImageElement> {
+  size?: number;
+}
 
-const Logo = ({ className = "", ...props }: LogoProps) => {
+const Logo = ({ size = 48, ...props }: LogoProps) => {
   return (
-    <h1
-      style={{ fontFamily: "Pacifico", cursor: "pointer" }}
+    <img
+      src='logo.svg'
+      alt='Logo'
+      style={{ width: size, height: size }}
+      title='BlockSurvey'
       {...props}
-      className={className}
-    >
-      Votely
-    </h1>
+    />
   );
 };
 

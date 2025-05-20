@@ -1,14 +1,16 @@
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <>
+    <div className='min-h-screen flex flex-col max-w-7xl px-4 mx-auto'>
       <Header />
-      <div className='max-w-7xl mx-auto p-4'>
+      <main className='flex-1 overflow-y-auto mt-5 md:mt-10'>
         <Outlet />
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 };
 

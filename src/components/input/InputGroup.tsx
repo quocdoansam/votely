@@ -14,10 +14,15 @@ function getDirection(direction?: string) {
   }
 }
 
-const InputGroup = ({ children, direction, ...props }: InputGroupProps) => {
+const InputGroup = ({
+  children,
+  direction,
+  className = "",
+  ...props
+}: InputGroupProps) => {
   const directionClasses = getDirection(direction);
   const baseClasses = "flex gap-1";
-  const finalclasses = [baseClasses, directionClasses]
+  const finalclasses = [baseClasses, directionClasses, className]
     .filter(Boolean)
     .join(" ")
     .trim();
