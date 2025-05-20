@@ -1,3 +1,4 @@
+# [CLOSED] [UNFINISHED]
 # Votely - A voting system blockchain integration
 
 > **I don't know why I build this project**.
