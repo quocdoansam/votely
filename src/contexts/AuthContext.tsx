@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!loggedIn) {
         setUser(null);
         localStorage.removeItem("user");
+        navigator("/login");
         return;
       }
 

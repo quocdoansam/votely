@@ -5,7 +5,6 @@ import {
   LogOut,
   Menu,
   PackagePlusIcon,
-  Settings,
   User,
   UserCircle,
 } from "lucide-react";
@@ -29,7 +28,7 @@ const NavUser = () => {
     ],
     [
       { path: "/", icon: LayoutDashboard, title: "Dashboard" },
-      { path: "/settings", icon: Settings, title: "Settings" },
+      { path: "/create", icon: PackagePlusIcon, title: "Create Survey" },
       { path: "/help", icon: HelpCircle, title: "Help Center" },
     ],
   ];
@@ -93,7 +92,7 @@ const NavUser = () => {
             <Button
               variant='secondary'
               size='icon'
-              onClick={() => setOpen((prev) => !prev)}
+              onClick={() => navigate("/create")}
             >
               <PackagePlusIcon />
             </Button>

@@ -1,106 +1,90 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import getElectionContract from "../../lib/contract";
 import { getSigner } from "../../lib/magic";
-import { useParams } from "react-router-dom";
-import { Election } from "../../types/Election";
-import NotFoundPage from "../../pages/NotFoundPage";
 import ElectionDetailSkeleton from "../skeleton/ElectionDetailSkeleton";
 import Button from "../button/Button";
-import { Copy, CopyCheckIcon, Share2 } from "lucide-react";
-import Input from "../input/Input";
+import { Share2 } from "lucide-react";
 import Alert from "../Alert";
+import { useAuth } from "../../contexts/AuthContext";
+import Error404 from "../../pages/errors/Error404";
+import CopyInput from "../input/CopyInput";
+import useSurveyMetadata from "../../hooks/useSurveyMetadata";
 
 const SurveyDetails = () => {
   const { id } = useParams();
-  const [election, setElection] = useState<Election | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const { user } = useAuth();
+  const signer = getSigner();
+  const contract = getElectionContract(signer);
+  const { survey, loading } = useSurveyMetadata(id || "");
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setLoading] = useState(false);
-
-  const signer = getSigner();
-  const contract = getElectionContract(signer);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
 
   const handleVote = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!selectedOption) {
+    if (selectedOption === null) {
       setError("Please, choose at least 1 option.");
       return;
     }
 
     setLoading(true);
+
     try {
+      if (!user?.walletAddress) {
+        setError("You need to log in to vote.");
+        return;
+      }
+
+      const hasVoted = await contract.hasVoted(id, user.walletAddress);
+      if (hasVoted) {
+        setError("You have already voted.");
+        return;
+      }
+
       const voteTx = await contract.vote(id, selectedOption);
       await voteTx.wait();
       setSuccess("Voted successfully.");
     } catch (err) {
       console.error("Voting error:", err);
-      setError("Vote failed.");
+      setError("Vote failed. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchElectionMetadata = async () => {
-      try {
-        const meta = await contract.getElectionMetadata(id);
-        setElection({
-          id,
-          creator: meta.creator,
-          title: meta.title,
-          desc: meta.desc,
-          isPrivate: meta.isPrivate,
-          options: meta._options,
-          startTime: new Date(Number(meta.startTIme) * 1000),
-          endTime: new Date(Number(meta.endTime) * 1000),
-        });
-      } catch (err) {
-        console.error("Failed to fetch election metadata:", err);
-      }
-    };
-
-    fetchElectionMetadata();
-  }, [contract, id]);
-
-  if (!id) return <NotFoundPage />;
-  if (!election)
+  if (loading) {
     return (
       <div className='max-w-5xl mx-auto'>
         <ElectionDetailSkeleton />
       </div>
     );
+  }
+
+  if (!id || !survey) return <Error404 />;
 
   return (
     <div className='px-2 pt-2 pb-6'>
       <div className='flex flex-col gap-2 pb-5'>
-        <h1 className='text-xl md:text-2xl font-semibold'>{election.title}</h1>
-        <span>{election.desc}</span>
+        <h1 className='text-xl md:text-2xl font-semibold'>{survey.title}</h1>
+        <span>{survey.desc}</span>
       </div>
 
       <form className='flex flex-col' onSubmit={handleVote}>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
-          {election.options.map((option, index) => (
+          {survey.options.map((option, index) => (
             <div key={index}>
               <input
                 type='radio'
                 id={`opt${index}`}
                 name='voteOption'
-                value={option}
+                value={index}
                 className='hidden peer'
-                onChange={() => setSelectedOption(option)}
+                onChange={() => setSelectedOption(index)}
               />
               <label
                 htmlFor={`opt${index}`}
@@ -112,8 +96,16 @@ const SurveyDetails = () => {
           ))}
         </div>
 
-        {error && <Alert variant='danger'>{error}</Alert>}
-        {success && <Alert variant='success'>{success}</Alert>}
+        {error && (
+          <Alert variant='danger' className='mt-6'>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert variant='success' className='mt-6'>
+            {success}
+          </Alert>
+        )}
 
         <div className='flex flex-row py-10 gap-4'>
           <Button
@@ -135,17 +127,7 @@ const SurveyDetails = () => {
           <Share2 size={24} />
           <span className='font-semibold'>Share</span>
         </div>
-        <div className='flex gap-2 w-full'>
-          <Input
-            id='share'
-            value={window.location.href}
-            readOnly
-            className='w-full'
-          />
-          <Button variant='secondary' size='icon' onClick={handleCopy}>
-            {copied ? <CopyCheckIcon /> : <Copy />}
-          </Button>
-        </div>
+        <CopyInput value={window.location.href} />
       </div>
     </div>
   );

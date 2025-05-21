@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ElectionStatus } from "../../types/ElectionStatus";
-import { Election } from "../../types/Election";
+import { Survey } from "../../types/Survey";
 import { getSigner } from "../../lib/magic";
 import getElectionContract from "../../lib/contract";
 import ElectionCardSkeleton from "../skeleton/ElectionCardSkeleton";
 import SurveyCard from "../survey/SurvayCard";
 
 const ElectionList = ({ status }: { status: ElectionStatus }) => {
-  const [elections, setElections] = useState<Election[]>([]);
+  const [elections, setElections] = useState<Survey[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,7 +33,8 @@ const ElectionList = ({ status }: { status: ElectionStatus }) => {
               options: meta._options,
               startTime: new Date(Number(meta.startTime) * 1000),
               endTime: new Date(Number(meta.endTime) * 1000),
-            } as Election;
+              createdAt: new Date(Number(meta.createdAt) * 1000),
+            } as Survey;
           })
         );
 
@@ -67,7 +68,7 @@ const ElectionList = ({ status }: { status: ElectionStatus }) => {
     <div className='columns-1 md:columns-2 lg:columns-3 gap-4'>
       {elections.map((election) => (
         <div key={election.id} className='break-inside-avoid mb-4'>
-          <SurveyCard election={election} />
+          <SurveyCard survey={election} />
         </div>
       ))}
     </div>

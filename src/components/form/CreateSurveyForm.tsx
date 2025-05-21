@@ -65,14 +65,11 @@ const CreateSurveyForm = () => {
         endTimestamp,
         title,
         desc,
-        options,
-        isPrivate
+        options
       );
 
       await tx.wait();
       setSuccess("Election Created Successfully.");
-
-      console.log({ title, desc, options, startTime, endTime, isPrivate });
     } catch (err: any) {
       console.log(err);
       setError("Failed to create election.");

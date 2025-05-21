@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import getElectionContract from "../../lib/contract";
 import { getSigner } from "../../lib/magic";
-import { Election } from "../../types/Election";
+import { Survey } from "../../types/Survey";
 import { Timer, TimerOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const ElectionCard = ({ election }: { election: Election }) => {
+const ElectionCard = ({ election }: { election: Survey }) => {
   const [results, setResults] = useState<number[] | null>(null);
 
   async function getResult() {

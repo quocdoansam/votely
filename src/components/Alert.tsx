@@ -32,10 +32,10 @@ function getIcon(variant?: string) {
   }
 }
 
-const Alert = ({ children, variant, ...props }: AlertProps) => {
+const Alert = ({ children, variant, className = "", ...props }: AlertProps) => {
   const variantClasses = getVariant(variant);
   const baseClasses = "flex flex-row p-4 rounded-xl";
-  const finalClasses = [baseClasses, variantClasses]
+  const finalClasses = [baseClasses, variantClasses, className]
     .filter(Boolean)
     .join(" ")
     .trim();

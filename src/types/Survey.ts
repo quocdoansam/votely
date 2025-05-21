@@ -1,10 +1,10 @@
-export type Election = {
+export type Survey = {
   id: string;
   creator: string;
   title: string;
   desc: string;
-  isPrivate: boolean;
   options: string[];
   startTime: Date;
   endTime: Date;
+  createdAt: Date;
 };

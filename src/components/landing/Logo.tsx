@@ -7,7 +7,7 @@ interface LogoProps extends ImgHTMLAttributes<HTMLImageElement> {
 const Logo = ({ size = 48, ...props }: LogoProps) => {
   return (
     <img
-      src='logo.svg'
+      src='/logo.svg'
       alt='Logo'
       style={{ width: size, height: size }}
       title='BlockSurvey'
