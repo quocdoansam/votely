@@ -4,7 +4,6 @@ import { useResponsive } from "../../hooks/useResponsive";
 import Button from "../button/Button";
 import { X } from "lucide-react";
 import InputGroup from "../input/InputGroup";
-import Checkbox from "../input/Checkbox";
 import Alert from "../Alert";
 import getElectionContract from "../../lib/contract";
 import { getSigner } from "../../lib/magic";
@@ -15,7 +14,6 @@ const CreateSurveyForm = () => {
   const [options, setOptions] = useState(["", ""]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -160,17 +158,6 @@ const CreateSurveyForm = () => {
             />
           </InputGroup>
         </div>
-        <InputGroup direction='horizontal'>
-          <Checkbox
-            id='checkbox'
-            checked={isPrivate}
-            onChange={(e) => setIsPrivate(e.target.checked)}
-          />
-          <label htmlFor='checkbox' className='text-sm'>
-            Anyone can join this election.
-          </label>
-        </InputGroup>
-
         {error && <Alert variant='danger'>{error}</Alert>}
         {success && <Alert variant='success'>{success}</Alert>}
 

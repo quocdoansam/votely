@@ -4,7 +4,6 @@ import { useResponsive } from "../../hooks/useResponsive";
 import Button from "../button/Button";
 import { X } from "lucide-react";
 import InputGroup from "../input/InputGroup";
-import Checkbox from "../input/Checkbox";
 import Alert from "../Alert";
 import getElectionContract from "../../lib/contract";
 import { getSigner } from "../../lib/magic";
@@ -15,7 +14,6 @@ const CreateElectionForm = () => {
   const [options, setOptions] = useState(["", ""]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -81,7 +79,7 @@ const CreateElectionForm = () => {
   return (
     <div>
       <div className='flex flex-col py-6'>
-        <h1 className='text-2xl font-semibold'>Create an election</h1>
+        <h1 className='text-2xl font-semibold'>Create an survey</h1>
         <h2 className=''>Please follow the terms and community standards.</h2>
       </div>
 
@@ -160,22 +158,11 @@ const CreateElectionForm = () => {
             />
           </InputGroup>
         </div>
-        <InputGroup direction='horizontal'>
-          <Checkbox
-            id='checkbox'
-            checked={isPrivate}
-            onChange={(e) => setIsPrivate(e.target.checked)}
-          />
-          <label htmlFor='checkbox' className='text-sm'>
-            Anyone can join this election.
-          </label>
-        </InputGroup>
-
         {error && <Alert variant='danger'>{error}</Alert>}
         {success && <Alert variant='success'>{success}</Alert>}
 
         <Button disabled={isLoading} variant='primary' size='md' type='submit'>
-          {isLoading ? "Creating..." : "Create Election"}
+          {isLoading ? "Creating..." : "Create Survey"}
         </Button>
       </form>
     </div>

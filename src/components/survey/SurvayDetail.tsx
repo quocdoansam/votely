@@ -68,14 +68,14 @@ const SurveyDetails = () => {
   if (!id || !survey) return <Error404 />;
 
   return (
-    <div className='px-2 pt-2 pb-6'>
+    <div className='max-w-xl mx-auto px-2 pt-2 pb-6'>
       <div className='flex flex-col gap-2 pb-5'>
         <h1 className='text-xl md:text-2xl font-semibold'>{survey.title}</h1>
         <span>{survey.desc}</span>
       </div>
 
       <form className='flex flex-col' onSubmit={handleVote}>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
+        <div className='grid grid-cols-1 gap-4'>
           {survey.options.map((option, index) => (
             <div key={index}>
               <input
